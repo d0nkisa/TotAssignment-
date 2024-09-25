@@ -17,6 +17,8 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
+    "@types/sequelize": "^4.28.20",
+    "sequelize": "^6.37.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   }
