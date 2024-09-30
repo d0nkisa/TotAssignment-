@@ -10,9 +10,9 @@ const sequelize_1 = require("sequelize");
 const createReservation = async (req, res) => {
     try {
         const { userId, tableNumber, reservationTime } = req.body;
-        // Check for overbooking
+        const formattedReservationTime = new Date(reservationTime).toISOString();
         const existingReservations = await Reservation_1.default.count({
-            where: { reservation_time: reservationTime },
+            where: { reservation_time: formattedReservationTime },
         });
         if (existingReservations >= 5) {
             return res.status(400).json({ error: 'No available tables for this time slot' });
@@ -20,7 +20,7 @@ const createReservation = async (req, res) => {
         const newReservation = await Reservation_1.default.create({
             user_id: userId,
             table_number: tableNumber,
-            reservation_time: reservationTime,
+            reservation_time: formattedReservationTime,
         });
         res.status(201).json(newReservation);
     }

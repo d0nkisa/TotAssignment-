@@ -14,6 +14,14 @@ Reservation.init({
         autoIncrement: true,
         primaryKey: true,
     },
+    user_id: {
+        type: sequelize_1.DataTypes.INTEGER,
+        references: {
+            model: 'Users',
+            key: 'id',
+        },
+        onDelete: 'CASCADE',
+    },
     table_number: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
@@ -22,6 +30,11 @@ Reservation.init({
         type: sequelize_1.DataTypes.DATE,
         allowNull: false,
     },
-}, { sequelize: db_1.default, modelName: 'Reservation' });
-Reservation.belongsTo(User_1.default, { foreignKey: 'user_id' });
+}, {
+    sequelize: db_1.default,
+    modelName: 'Reservation',
+    tableName: 'Reservations',
+});
+Reservation.belongsTo(User_1.default, { foreignKey: 'user_id', as: 'user' });
+User_1.default.hasMany(Reservation, { foreignKey: 'user_id', as: 'reservations' });
 exports.default = Reservation;

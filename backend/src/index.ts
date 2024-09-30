@@ -18,7 +18,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 sequelize.authenticate()
   .then(() => {
     console.log('Database connected...');
-    return sequelize.sync(); // Ensures all models are synced
+    return sequelize.sync();
   })
   .then(() => {
     app.listen(PORT, () => {

@@ -21,9 +21,10 @@ User.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         unique: true,
-        validate: {
-            isEmail: true,
-        },
     },
-}, { sequelize: db_1.default, modelName: 'User' });
+}, {
+    sequelize: db_1.default,
+    modelName: 'User',
+    tableName: 'Users',
+});
 exports.default = User;

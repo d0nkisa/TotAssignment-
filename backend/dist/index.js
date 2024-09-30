@@ -9,16 +9,14 @@ const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const reservationsRoutes_1 = __importDefault(require("./routes/reservationsRoutes"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_1 = __importDefault(require("./swagger"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 3000;
-// Middleware
+const PORT = process.env.PORT || 5000;
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-// Routes
 app.use('/users', userRoutes_1.default);
 app.use('/reservations', reservationsRoutes_1.default);
-// Swagger Documentation
 app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
-// Test DB Connection and Start Server
 db_1.default.authenticate()
     .then(() => {
     console.log('Database connected...');

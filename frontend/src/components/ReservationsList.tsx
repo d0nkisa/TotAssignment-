@@ -9,24 +9,34 @@ const ReservationList: React.FC = () => {
 
   const handleFetch = async () => {
     const result = await getReservations(startDate, endDate);
+    console.log(result)
     setReservations(result);
   };
 
   return (
-    <div>
+    <form className='UserForm'>
       <h2>Reservations</h2>
       <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
       <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
       <ActionButton action={handleFetch} buttonText='Fetch Reservations'/>
-      
-      <ul>
-        {reservations.map((reservation: any) => (
-          <li key={reservation.id}>
-            User: {reservation.user_id}, Table: {reservation.table_number}, Time: {reservation.reservation_time}
-          </li>
-        ))}
-      </ul>
-    </div>
+      <div className='table_component'>
+        <table>
+          <tr>
+            <th>User ID</th>
+            <th>Table ID</th>
+            <th>Reservation Time</th>
+          </tr>
+          
+          {reservations.map((reservation: any) => (
+            <tr key={reservation.id}>
+              <td>{reservation.user_id}</td>
+              <td>{reservation.table_number}</td>
+              <td>{reservation.reservation_time}</td>
+            </tr>
+          ))}
+        </table>
+      </div>
+    </form>
   );
 };
 

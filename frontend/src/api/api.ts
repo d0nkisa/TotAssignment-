@@ -25,10 +25,19 @@ export const createUser = async (name: string, email: string) => {
 
 export const createReservation = async (userId: number, tableNumber: number, reservationTime: string) => {
   try{
+    console.log(JSON.stringify({
+      userId: Number(userId),
+      tableNumber: Number(tableNumber),
+      reservationTime,
+    }));
     const response = await fetch(`${API_BASE_URL}/reservations`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId, tableNumber, reservationTime }),
+      body: JSON.stringify({
+        userId: Number(userId),
+        tableNumber: Number(tableNumber),
+        reservationTime,
+      }),
     });
     
     if (!response.ok) {
@@ -38,6 +47,7 @@ export const createReservation = async (userId: number, tableNumber: number, res
     }
 
     const result = await response.json();
+    console.log(result)
     return result;
   } catch (error) {
     errorToast('An error occurred while creating the reservation.');
@@ -46,7 +56,7 @@ export const createReservation = async (userId: number, tableNumber: number, res
 
 export const getReservations = async (startDate: string, endDate: string) => {
   try{
-    const response = await fetch(`${API_BASE_URL}/reservations?startDate=${startDate}&endDate=${endDate}`);
+    const response = await fetch(`${API_BASE_URL}/reservations?startDate=${startDate}:00.000Z&endDate=${endDate}:00.000Z`);
     
     if (!response.ok) {
       errorToast(`Failed to get reservations: ${response.statusText}`);
