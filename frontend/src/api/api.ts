@@ -25,11 +25,6 @@ export const createUser = async (name: string, email: string) => {
 
 export const createReservation = async (userId: number, tableNumber: number, reservationTime: string) => {
   try{
-    console.log(JSON.stringify({
-      userId: Number(userId),
-      tableNumber: Number(tableNumber),
-      reservationTime,
-    }));
     const response = await fetch(`${API_BASE_URL}/reservations`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -47,7 +42,6 @@ export const createReservation = async (userId: number, tableNumber: number, res
     }
 
     const result = await response.json();
-    console.log(result)
     return result;
   } catch (error) {
     errorToast('An error occurred while creating the reservation.');

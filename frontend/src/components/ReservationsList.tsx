@@ -9,7 +9,6 @@ const ReservationList: React.FC = () => {
 
   const handleFetch = async () => {
     const result = await getReservations(startDate, endDate);
-    console.log(result)
     setReservations(result);
   };
 
