@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getReservations } from '../api/api';
+import ActionButton from './common/ActionButton';
 
 const ReservationList: React.FC = () => {
   const [startDate, setStartDate] = useState('');
@@ -16,7 +17,7 @@ const ReservationList: React.FC = () => {
       <h2>Reservations</h2>
       <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
       <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
-      <button onClick={handleFetch}>Fetch Reservations</button>
+      <ActionButton action={handleFetch} buttonText='Fetch Reservations'/>
       
       <ul>
         {reservations.map((reservation: any) => (
