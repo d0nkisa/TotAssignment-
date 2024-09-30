@@ -31,10 +31,10 @@ export const createReservation = async (userId: number, tableNumber: number, res
       body: JSON.stringify({
         userId: Number(userId),
         tableNumber: Number(tableNumber),
-        reservationTime,
+        reservationTime: new Date(reservationTime),
       }),
     });
-    
+    console.log(response);
     if (!response.ok) {
       errorToast(`Failed to create reservation: ${response.statusText}`);
     } else{
@@ -44,6 +44,7 @@ export const createReservation = async (userId: number, tableNumber: number, res
     const result = await response.json();
     return result;
   } catch (error) {
+    console.log(error)
     errorToast('An error occurred while creating the reservation.');
   }
 };

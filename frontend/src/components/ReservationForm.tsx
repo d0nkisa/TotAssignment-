@@ -13,8 +13,12 @@ const ReservationForm: React.FC = () => {
     if (!userId || !tableNumber || !reservationTime) {
       errorToast("All fields are required!");
       return;
+    } else if(Number(userId) <= 0 || (Number(tableNumber) > 5 || Number(tableNumber) <= 0)) {
+      errorToast("Invalid data! User ID must be greater than zero and table numbers can vary from 1 to 5!");
+      return;
     } else {
-      await createReservation(Number(userId), Number(tableNumber), reservationTime);
+      const result = await createReservation(Number(userId), Number(tableNumber), reservationTime);
+      console.log(result);
     }
   };
 
