@@ -27,7 +27,8 @@ router.get('/', async (req: Request, res: Response) => {
     const reservations = await Reservation.findAll({
       where: {
         reservation_time: {
-          [Op.between]: [start, end]
+          [Op.gte]: start,
+          [Op.lte]: end  
         }
       }
     });

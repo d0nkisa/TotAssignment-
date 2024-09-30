@@ -51,7 +51,7 @@ export const createReservation = async (userId: number, tableNumber: number, res
 
 export const getReservations = async (startDate: string, endDate: string) => {
   try{
-    const response = await fetch(`${API_BASE_URL}/reservations?startDate=${startDate}:00.000Z&endDate=${endDate}:00.000Z`);
+    const response = await fetch(`${API_BASE_URL}/reservations?startDate=${startDate}&endDate=${endDate}`);
     
     if (!response.ok) {
       errorToast(`Failed to get reservations: ${response.statusText}`);

@@ -7,7 +7,8 @@ const ReservationList: React.FC = () => {
   const [endDate, setEndDate] = useState('');
   const [reservations, setReservations] = useState([]);
 
-  const handleFetch = async () => {
+  const handleFetch = async (event: React.FormEvent) => {
+    event.preventDefault();
     const result = await getReservations(startDate, endDate);
     setReservations(result);
   };

@@ -36,17 +36,10 @@ export const getReservations = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Start date and end date are required' });
     }
 
-    const start = new Date(startDate as string);
-    const end = new Date(endDate as string);
-
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      return res.status(400).json({ error: 'Invalid date format' });
-    }
-
     const reservations = await Reservation.findAll({
       where: {
         reservation_time: {
-          [Op.between]: [start, end],
+          [Op.between]: [startDate, endDate],
         },
       },
       include: [User],
