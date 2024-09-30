@@ -5,25 +5,37 @@ import { Op } from 'sequelize';
 
 export const createReservation = async (req: Request, res: Response) => {
   try {
-    const { userId, tableNumber, reservationTime } = req.body;
-    const formattedReservationTime = new Date(reservationTime).toISOString();
+    const { userId, tableNumber, reservationTime }: { userId: number; tableNumber: number; reservationTime: string } = req.body;
 
-    const existingReservations = await Reservation.count({
-      where: { reservation_time: formattedReservationTime },
+    const reservationStartTime = new Date(reservationTime);
+    const reservationEndTime = new Date(reservationStartTime.getTime() + 60 * 60 * 1000); // Add 1 hour to the reservation time
+
+    // Check for overlapping reservations for the same table
+    const conflictingReservations = await Reservation.findOne({
+      where: {
+        table_number: tableNumber,
+        reservation_time: {
+          [Op.or]: [
+            { [Op.between]: [reservationStartTime, reservationEndTime] },  // Starts during the new reservation
+            { [Op.lte]: reservationStartTime },                            // Ends after the start of the new reservation
+          ]
+        }
+      }
     });
 
-    if (existingReservations >= 5) {
-      return res.status(400).json({ error: 'No available tables for this time slot' });
+    if (conflictingReservations) {
+      return res.status(400).json({ error: 'The table is already booked or the time is overlapping with another reservation.' });
     }
 
+    // Create the new reservation if no conflict exists
     const newReservation = await Reservation.create({
       user_id: userId,
       table_number: tableNumber,
-      reservation_time: formattedReservationTime,
+      reservation_time: reservationStartTime,
     });
 
     res.status(201).json(newReservation);
-  } catch (error) {
+  } catch (error: any) {
     res.status(400).json({ error: 'Unable to create reservation' });
   }
 };
