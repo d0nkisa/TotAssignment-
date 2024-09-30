@@ -8,16 +8,14 @@ export const createReservation = async (req: Request, res: Response) => {
     const { userId, tableNumber, reservationTime }: { userId: number; tableNumber: number; reservationTime: string } = req.body;
 
     const reservationStartTime = new Date(reservationTime);
-    const reservationEndTime = new Date(reservationStartTime.getTime() + 60 * 60 * 1000); // Add 1 hour to the reservation time
+    const reservationEndTime = new Date(reservationStartTime.getTime() + 60 * 60 * 1000);
 
-    // Check for overlapping reservations for the same table
     const conflictingReservations = await Reservation.findOne({
       where: {
         table_number: tableNumber,
         reservation_time: {
           [Op.or]: [
-            { [Op.between]: [reservationStartTime, reservationEndTime] },  // Starts during the new reservation
-            { [Op.lte]: reservationStartTime },                            // Ends after the start of the new reservation
+            { [Op.between]: [reservationStartTime, reservationEndTime] },
           ]
         }
       }
@@ -25,16 +23,14 @@ export const createReservation = async (req: Request, res: Response) => {
 
     if (conflictingReservations) {
       return res.status(400).json({ error: 'The table is already booked or the time is overlapping with another reservation.' });
+    } else {
+      const newReservation = await Reservation.create({
+        user_id: userId,
+        table_number: tableNumber,
+        reservation_time: reservationStartTime,
+      });
+      res.status(201).json(newReservation);
     }
-
-    // Create the new reservation if no conflict exists
-    const newReservation = await Reservation.create({
-      user_id: userId,
-      table_number: tableNumber,
-      reservation_time: reservationStartTime,
-    });
-
-    res.status(201).json(newReservation);
   } catch (error: any) {
     res.status(400).json({ error: 'Unable to create reservation' });
   }

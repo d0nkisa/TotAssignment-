@@ -51,6 +51,7 @@ export const createReservation = async (userId: number, tableNumber: number, res
     }
 
     const result = await response.json();
+    console.log(result);
     return result;
   } catch (error) {
     errorToast('An error occurred while creating the reservation.');
