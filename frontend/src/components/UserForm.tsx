@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createUser } from '../api/api';
 import ActionButton from './common/ActionButton';
+import { errorToast } from '../utils/toastify';
 
 const UserForm: React.FC = () => {
   const [name, setName] = useState('');
@@ -8,7 +9,22 @@ const UserForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
-      await createUser(name, email);
+      const isValidEmail = (email: string) => {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+      };
+      
+      if (!name || !email) {
+        errorToast("All fields are required!");
+        return;
+      } else if (!isValidEmail(email)) {
+        errorToast('Please enter a valid email address');
+        return;
+      } else {
+        await createUser(name, email);
+        setName('');
+        setEmail('');
+      }
   };
 
   return (
