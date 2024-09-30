@@ -43,7 +43,6 @@ export const createReservation = async (userId: number, tableNumber: number, res
       }),
     });
 
-    console.log(response);
 
     if (!response.ok) {
       errorToast(`Failed to create reservation: ${response.statusText}`);
@@ -54,7 +53,6 @@ export const createReservation = async (userId: number, tableNumber: number, res
     const result = await response.json();
     return result;
   } catch (error) {
-    console.log(error);
     errorToast('An error occurred while creating the reservation.');
   }
 };

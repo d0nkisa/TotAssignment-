@@ -17,8 +17,10 @@ const ReservationForm: React.FC = () => {
       errorToast("Invalid data! User ID must be greater than zero and table numbers can vary from 1 to 5!");
       return;
     } else {
-      const result = await createReservation(Number(userId), Number(tableNumber), reservationTime);
-      console.log(result);
+      await createReservation(Number(userId), Number(tableNumber), reservationTime);
+      setUserId('');
+      setTableNumber('');
+      setReservationTime('');
     }
   };
 
