@@ -9,8 +9,7 @@ const ReservationForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newReservation = await createReservation(Number(userId), Number(tableNumber), reservationTime);
-    console.log('Reservation created:', newReservation);
+    await createReservation(Number(userId), Number(tableNumber), reservationTime);
   };
 
   return (

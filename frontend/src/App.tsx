@@ -3,6 +3,8 @@ import UserForm from './components/UserForm';
 import ReservationForm from './components/ReservationForm';
 import ReservationsList from './components/ReservationsList';
 import './styles.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App: React.FC = () => {
   return (
@@ -11,6 +13,7 @@ const App: React.FC = () => {
       <UserForm />
       <ReservationForm />
       <ReservationsList />
+      <ToastContainer />
     </div>
   );
 };

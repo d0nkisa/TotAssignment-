@@ -6,10 +6,10 @@ import { Op } from 'sequelize';
 export const createReservation = async (req: Request, res: Response) => {
   try {
     const { userId, tableNumber, reservationTime } = req.body;
+    const formattedReservationTime = new Date(reservationTime).toISOString();
 
-    // Check for overbooking
     const existingReservations = await Reservation.count({
-      where: { reservation_time: reservationTime },
+      where: { reservation_time: formattedReservationTime },
     });
 
     if (existingReservations >= 5) {
@@ -19,7 +19,7 @@ export const createReservation = async (req: Request, res: Response) => {
     const newReservation = await Reservation.create({
       user_id: userId,
       table_number: tableNumber,
-      reservation_time: reservationTime,
+      reservation_time: formattedReservationTime,
     });
 
     res.status(201).json(newReservation);
