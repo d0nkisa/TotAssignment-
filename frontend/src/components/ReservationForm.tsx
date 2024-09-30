@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createReservation } from '../api/api';
 import ActionButton from './common/ActionButton';
+import { errorToast } from '../utils/toastify';
 
 const ReservationForm: React.FC = () => {
   const [userId, setUserId] = useState('');
@@ -9,7 +10,12 @@ const ReservationForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createReservation(Number(userId), Number(tableNumber), reservationTime);
+    if (!userId || !tableNumber || !reservationTime) {
+      errorToast("All fields are required!");
+      return;
+    } else {
+      await createReservation(Number(userId), Number(tableNumber), reservationTime);
+    }
   };
 
   return (
